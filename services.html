@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Services — VertexLink</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+
+/* ── OFFRES TABLE ── */
+.offers { border-top: 1px solid rgba(0,215,255,.1) }
+.offer {
+  display: grid; grid-template-columns: 80px 1fr 180px;
+  gap: 40px; align-items: center;
+  padding: 44px 0;
+  border-bottom: 1px solid rgba(0,215,255,.06);
+  transition: background .2s;
+}
+.offer:hover { background: rgba(0,215,255,.025) }
+.offer-idx { font-family: var(--mono); font-size: .65rem; color: rgba(0,215,255,.28) }
+.offer-name { font-family: var(--syne); font-weight: 800; font-size: 1.4rem; letter-spacing: -.03em; margin-bottom: 10px }
+.offer-desc { font-family: var(--mono); font-size: .72rem; color: rgba(255,255,255,.3); line-height: 1.75; font-weight: 300; margin-bottom: 12px; max-width: 480px }
+.offer-tags { display: flex; flex-wrap: wrap; gap: 5px }
+.tag { font-family: var(--mono); font-size: .62rem; color: rgba(0,215,255,.48); border: 1px solid rgba(0,215,255,.12); padding: 2px 9px; border-radius: 3px; background: rgba(0,215,255,.03) }
+.offer-price-wrap { text-align: right; flex-shrink: 0 }
+.offer-price {
+  display: block; font-family: var(--syne); font-weight: 800;
+  font-size: 1.8rem; letter-spacing: -.04em;
+  background: linear-gradient(90deg,var(--white),var(--cyan));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.offer-note { font-family: var(--mono); font-size: .62rem; color: rgba(255,255,255,.22); margin-top: 4px; display: block }
+
+/* ── PRICING CARDS ── */
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1px; background: rgba(0,215,255,.08);
+  border: 1px solid rgba(0,215,255,.1); border-radius: 4px; overflow: hidden;
+  margin-top: 52px;
+}
+.pcard {
+  background: rgba(8,8,14,.92); padding: 44px 36px;
+  display: flex; flex-direction: column; gap: 0;
+  position: relative; overflow: hidden; transition: background .25s;
+}
+.pcard:hover { background: rgba(11,11,18,.97) }
+.pcard.featured {
+  background: rgba(10,10,20,.95);
+}
+.pcard.featured::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+}
+.pbadge {
+  position: absolute; top: 18px; right: 18px;
+  font-family: var(--mono); font-size: .6rem; letter-spacing: .08em;
+  color: #07070a; background: linear-gradient(90deg, var(--blue), var(--cyan));
+  padding: 3px 10px; border-radius: 3px; font-weight: 400;
+}
+.pname { font-family: var(--mono); font-size: .66rem; color: rgba(0,215,255,.45); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 14px }
+.pprice {
+  font-family: var(--syne); font-weight: 800;
+  font-size: clamp(2rem,4vw,3rem); letter-spacing: -.05em; line-height: 1;
+  background: linear-gradient(135deg,var(--white),var(--cyan));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 4px;
+}
+.pperiod { font-family: var(--mono); font-size: .64rem; color: var(--grey); margin-bottom: 32px }
+.pfeats { list-style: none; margin-bottom: 36px; border-top: 1px solid rgba(0,215,255,.08); padding-top: 24px; display: flex; flex-direction: column; gap: 0 }
+.pfeats li {
+  font-size: .8rem; color: rgba(255,255,255,.55);
+  padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.04);
+  display: flex; align-items: center; gap: 10px;
+}
+.pfeats li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--cyan); opacity: .6; flex-shrink: 0 }
+.pfeats li:last-child { border-bottom: none }
+.pfeats li strong { color: rgba(255,255,255,.8); font-weight: 500 }
+.pcta {
+  display: block; text-align: center;
+  font-family: var(--syne); font-weight: 700; font-size: .85rem;
+  border: 1px solid rgba(0,215,255,.25); color: var(--cyan);
+  padding: 13px 20px; border-radius: 5px;
+  transition: background .2s, border-color .2s; margin-top: auto;
+}
+.pcta:hover { background: rgba(0,215,255,.08); border-color: rgba(0,215,255,.45) }
+.pcard.featured .pcta {
+  background: linear-gradient(90deg,var(--blue),var(--cyan));
+  border-color: transparent; color: #07070a;
+}
+.pcard.featured .pcta:hover { opacity: .88 }
+
+/* ── WHY ── */
+.why-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1px; background: rgba(0,215,255,.08);
+  border: 1px solid rgba(0,215,255,.1); border-radius: 4px; overflow: hidden;
+}
+.why-cell {
+  background: rgba(8,8,14,.92); padding: 36px 30px;
+  position: relative; overflow: hidden; transition: background .25s;
+}
+.why-cell:hover { background: rgba(11,11,18,.97) }
+.why-cell::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg,transparent,rgba(0,215,255,.3),transparent);
+  opacity: 0; transition: opacity .3s;
+}
+.why-cell:hover::after { opacity: 1 }
+.why-ico {
+  width: 34px; height: 34px; border-radius: 7px;
+  background: rgba(0,215,255,.07); border: 1px solid rgba(0,215,255,.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .95rem; margin-bottom: 16px;
+}
+.why-cell h4 { font-family: var(--syne); font-weight: 700; font-size: .95rem; letter-spacing: -.01em; margin-bottom: 8px }
+.why-cell p { font-family: var(--mono); font-size: .7rem; color: rgba(255,255,255,.3); line-height: 1.75; font-weight: 300 }
+
+@media(max-width:900px){
+  .offer { grid-template-columns: 1fr; gap: 12px }
+  .offer-price-wrap { text-align: left }
+  .pricing-grid { grid-template-columns: 1fr }
+  .why-grid { grid-template-columns: 1fr }
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="prog"></div>
+<canvas id="cvs"></canvas>
+
+<nav>
+  <a href="index.html" class="logo">
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="5" fill="rgba(0,215,255,.08)" stroke="rgba(0,215,255,.22)" stroke-width="1"/><path d="M6 8L11 18.5L13 15L15 18.5L20 8" stroke="url(#g)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="g" x1="6" y1="8" x2="20" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#3d6fff"/><stop offset="1" stop-color="#00d7ff"/></linearGradient></defs></svg>
+    VertexLink
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="services.html" class="on">Services</a></li>
+    <li><a href="realisations.html">Réalisations</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="contact.html" class="nav-cta">→ Démarrer un projet</a>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <p class="lbl rv" style="animation:fadeUp .6s ease .1s both;opacity:0">Services</p>
+    <h1 class="rv d1" style="animation:fadeUp .6s ease .25s both;opacity:0">Nos prestations</h1>
+    <p class="rv d2" style="animation:fadeUp .6s ease .4s both;opacity:0">Code sur mesure, zéro template, zéro WordPress.<br>Design exclusif livré en 14 jours.</p>
+  </div>
+</div>
+
+<section class="sec">
+  <div class="wrap">
+    <p class="lbl rv">Ce qu'on construit</p>
+    <div class="offers">
+      <div class="offer rv">
+        <span class="offer-idx">01</span>
+        <div>
+          <div class="offer-name">Site Vitrine</div>
+          <p class="offer-desc">Votre vitrine digitale codée à la main. Multi-pages, design exclusif, SEO technique intégré dès la première ligne.</p>
+          <div class="offer-tags"><span class="tag">Jusqu'à 6 pages</span><span class="tag">Design unique</span><span class="tag">SEO + Schema.org</span><span class="tag">Formulaire</span><span class="tag">WhatsApp</span><span class="tag">14 jours</span></div>
+        </div>
+        <div class="offer-price-wrap"><span class="offer-price">497 €</span><span class="offer-note">2× possible</span></div>
+      </div>
+      <div class="offer rv d1">
+        <span class="offer-idx">02</span>
+        <div>
+          <div class="offer-name">Landing Page</div>
+          <p class="offer-desc">Une page taillée pour convertir. Copywriting, Pixel Meta, A/B testing ready. Zéro distraction, 100% objectif.</p>
+          <div class="offer-tags"><span class="tag">Copywriting inclus</span><span class="tag">Pixel Meta</span><span class="tag">Lighthouse 95+</span><span class="tag">Analytics</span><span class="tag">7 jours</span></div>
+        </div>
+        <div class="offer-price-wrap"><span class="offer-price">297 €</span><span class="offer-note">2× possible</span></div>
+      </div>
+      <div class="offer rv d2">
+        <span class="offer-idx">03</span>
+        <div>
+          <div class="offer-name">Audit & Refonte</div>
+          <p class="offer-desc">Votre site sous-performe ? On diagnostique ce qui coince et on reconstruit ce qui doit l'être.</p>
+          <div class="offer-tags"><span class="tag">Audit Lighthouse</span><span class="tag">Core Web Vitals</span><span class="tag">Refonte UX/UI</span><span class="tag">Rapport détaillé</span></div>
+        </div>
+        <div class="offer-price-wrap"><span class="offer-price">Sur devis</span><span class="offer-note">réponse 24h</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-sm">
+  <div class="wrap">
+    <p class="lbl rv">Tarifs détaillés</p>
+    <h2 class="sec-title rv d1">Forfaits <em>transparents.</em></h2>
+    <div class="pricing-grid">
+      <div class="pcard rv">
+        <div class="pname">Starter</div>
+        <div class="pprice">297 €</div>
+        <div class="pperiod">Forfait unique · 2× possible</div>
+        <ul class="pfeats">
+          <li>Site vitrine <strong>3 à 5 pages</strong></li>
+          <li>Design responsive sur tous écrans</li>
+          <li>Formulaire de contact intégré</li>
+          <li>Bouton WhatsApp inclus</li>
+          <li>Optimisation SEO de base</li>
+          <li>Hébergement Netlify gratuit</li>
+          <li>Support 60 jours</li>
+          <li>Livraison en <strong>14 jours</strong></li>
+        </ul>
+        <a href="contact.html" class="pcta">Démarrer ce projet</a>
+      </div>
+      <div class="pcard featured rv d1">
+        <div class="pbadge">Populaire</div>
+        <div class="pname">Business</div>
+        <div class="pprice">497 €</div>
+        <div class="pperiod">Forfait unique · 2× possible</div>
+        <ul class="pfeats">
+          <li>Site vitrine <strong>jusqu'à 10 pages</strong></li>
+          <li>Design premium sur-mesure</li>
+          <li>Formulaire + WhatsApp</li>
+          <li>Blog & espace actualités</li>
+          <li>SEO avancé + Google Analytics</li>
+          <li>Hébergement Netlify gratuit</li>
+          <li>Formation à la gestion</li>
+          <li>Support <strong>4 mois</strong></li>
+        </ul>
+        <a href="contact.html" class="pcta">Démarrer ce projet</a>
+      </div>
+      <div class="pcard rv d2">
+        <div class="pname">Business Pro</div>
+        <div class="pprice" style="font-size:1.8rem">Sur mesure</div>
+        <div class="pperiod">Devis personnalisé · gratuit</div>
+        <ul class="pfeats">
+          <li>Site vitrine <strong>pages illimitées</strong></li>
+          <li>Design entièrement sur-mesure</li>
+          <li>Blog + espace membres</li>
+          <li>Formulaire avancé + WhatsApp</li>
+          <li>SEO complet + suivi perf</li>
+          <li>Hébergement Netlify gratuit</li>
+          <li>Formation complète incluse</li>
+          <li>Support prioritaire <strong>6 mois</strong></li>
+        </ul>
+        <a href="contact.html" class="pcta">Demander un devis</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-sm">
+  <div class="wrap">
+    <p class="lbl rv">Pourquoi nous</p>
+    <div class="why-grid">
+      <div class="why-cell rv"><div class="why-ico">⚡</div><h4>Code 100% sur mesure</h4><p>Aucun template, aucun page-builder. Chaque ligne écrite pour votre projet spécifique.</p></div>
+      <div class="why-cell rv d1"><div class="why-ico">📊</div><h4>Performance mesurée</h4><p>Score Lighthouse 95+ garanti sur chaque livraison. Audité, documenté, livré avec rapport.</p></div>
+      <div class="why-cell rv d2"><div class="why-ico">🗓</div><h4>Délai respecté</h4><p>Brief → maquette → code → livraison. Le planning est tenu, sans exception ni mauvaise surprise.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band rv" style="position:relative;z-index:2;padding:100px 72px;text-align:center;border-top:1px solid rgba(0,215,255,.08)">
+  <p class="lbl" style="justify-content:center;margin-bottom:20px">Prêt ?</p>
+  <h2 class="sec-title" style="font-size:clamp(2rem,4.5vw,3.8rem);margin-bottom:32px">Un projet en tête ?<br><em>On vous répond sous 24h.</em></h2>
+  <a href="contact.html" class="btn-p" style="display:inline-flex">
+    Réserver un appel gratuit
+    <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 7.5h13M8 2l5 5.5L8 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+  <p style="font-family:var(--mono);font-size:.64rem;color:rgba(255,255,255,.2);letter-spacing:.08em;margin-top:18px">Devis gratuit · Sans engagement · Réponse sous 24h</p>
+</div>
+
+<footer>
+  <span class="f-logo">
+    <svg width="20" height="20" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="5" fill="rgba(0,215,255,.08)" stroke="rgba(0,215,255,.2)" stroke-width="1"/><path d="M6 8L11 18.5L13 15L15 18.5L20 8" stroke="url(#g2)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="g2" x1="6" y1="8" x2="20" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#3d6fff"/><stop offset="1" stop-color="#00d7ff"/></linearGradient></defs></svg>
+    VertexLink
+  </span>
+  <div class="f-links">
+    <a href="index.html">Accueil</a><a href="realisations.html">Réalisations</a>
+    <a href="contact.html">Contact</a>
+    <a href="mailto:vertexlink33@gmail.com">vertexlink33@gmail.com</a>
+  </div>
+  <span class="f-copy">© 2025 VertexLink</span>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>

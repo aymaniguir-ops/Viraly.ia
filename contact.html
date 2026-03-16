@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Contact — VertexLink</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.contact-layout {
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 60px); margin-top: 60px;
+  position: relative; z-index: 2;
+}
+
+/* LEFT */
+.c-left {
+  padding: 80px 64px; display: flex; flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid rgba(0,215,255,.08);
+  background: rgba(7,7,10,.6); backdrop-filter: blur(10px);
+}
+.c-left h1 {
+  font-family: var(--syne); font-weight: 800;
+  font-size: clamp(2rem,4vw,3.4rem);
+  letter-spacing: -.04em; line-height: 1.04;
+  margin-top: 14px; margin-bottom: 18px;
+}
+.c-left > div > p {
+  font-family: var(--mono); font-size: .76rem;
+  color: rgba(255,255,255,.3); line-height: 1.8; max-width: 360px;
+}
+
+.info-list { border-top: 1px solid rgba(0,215,255,.1) }
+.info-row {
+  padding: 18px 0; border-bottom: 1px solid rgba(0,215,255,.06);
+  display: flex; flex-direction: column; gap: 5px;
+}
+.info-lbl { font-family: var(--mono); font-size: .6rem; color: rgba(0,215,255,.38); letter-spacing: .1em; text-transform: uppercase }
+.info-val { font-family: var(--mono); font-size: .8rem; color: rgba(255,255,255,.6) }
+.info-val a { transition: color .2s }
+.info-val a:hover { color: var(--cyan) }
+
+.availability {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: .66rem;
+  color: rgba(34,197,94,.7); letter-spacing: .06em;
+}
+.adot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 8px rgba(34,197,94,.6);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+/* RIGHT */
+.c-right {
+  padding: 80px 64px; display: flex; flex-direction: column;
+  justify-content: center;
+  background: rgba(7,7,10,.45); backdrop-filter: blur(8px);
+}
+.form-title { font-family: var(--syne); font-weight: 800; font-size: 1.2rem; letter-spacing: -.02em; margin-bottom: 36px }
+
+.field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 20px }
+.field label { font-family: var(--mono); font-size: .6rem; color: rgba(0,215,255,.38); letter-spacing: .1em; text-transform: uppercase }
+.field input,
+.field select,
+.field textarea {
+  font-family: var(--mono); font-size: .8rem;
+  color: var(--white); background: transparent;
+  border: none; border-bottom: 1px solid rgba(0,215,255,.14);
+  padding: 10px 0; outline: none; width: 100%;
+  transition: border-color .2s;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus { border-color: rgba(0,215,255,.42) }
+.field input::placeholder,
+.field textarea::placeholder { color: rgba(255,255,255,.16) }
+.field select { -webkit-appearance: none; color: rgba(255,255,255,.22) }
+.field select.f { color: var(--white) }
+.field textarea { resize: none; height: 88px; line-height: 1.7 }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px }
+
+.btn-submit {
+  width: 100%; padding: 14px;
+  font-family: var(--syne); font-weight: 700; font-size: .88rem;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  color: #07070a; border: none; border-radius: 5px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  cursor: none; margin-top: 8px;
+  transition: opacity .2s, transform .2s;
+}
+.btn-submit:hover { opacity: .88; transform: translateY(-1px) }
+.form-foot { font-family: var(--mono); font-size: .62rem; color: rgba(255,255,255,.18); text-align: center; margin-top: 12px; letter-spacing: .04em }
+
+.success-box {
+  display: none; text-align: center; padding: 60px 0;
+}
+.success-box h3 { font-family: var(--syne); font-weight: 800; font-size: 1.4rem; color: var(--cyan); margin-bottom: 10px }
+.success-box p { font-family: var(--mono); font-size: .76rem; color: rgba(255,255,255,.35) }
+
+@media(max-width:900px){
+  .contact-layout { grid-template-columns: 1fr; margin-top: 60px }
+  .c-left { padding: 72px 20px 48px; border-right: none; border-bottom: 1px solid rgba(0,215,255,.08) }
+  .c-right { padding: 48px 20px }
+  .row2 { grid-template-columns: 1fr }
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="prog"></div>
+<canvas id="cvs"></canvas>
+
+<nav>
+  <a href="index.html" class="logo">
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="5" fill="rgba(0,215,255,.08)" stroke="rgba(0,215,255,.22)" stroke-width="1"/><path d="M6 8L11 18.5L13 15L15 18.5L20 8" stroke="url(#g)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="g" x1="6" y1="8" x2="20" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#3d6fff"/><stop offset="1" stop-color="#00d7ff"/></linearGradient></defs></svg>
+    VertexLink
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="realisations.html">Réalisations</a></li>
+    <li><a href="contact.html" class="on">Contact</a></li>
+  </ul>
+  <a href="contact.html" class="nav-cta">→ Démarrer un projet</a>
+</nav>
+
+<div class="contact-layout">
+  <div class="c-left">
+    <div>
+      <p class="lbl rv" style="animation:fadeUp .6s ease .1s both;opacity:0">Contact</p>
+      <h1 style="animation:fadeUp .6s ease .25s both;opacity:0">On vous répond<br>sous 24h.</h1>
+      <p style="animation:fadeUp .6s ease .4s both;opacity:0">Décrivez votre projet, on vous envoie un devis gratuit sans engagement.</p>
+    </div>
+    <div class="info-list rv" style="animation:fadeUp .6s ease .55s both;opacity:0">
+      <div class="info-row"><div class="info-lbl">Email</div><div class="info-val"><a href="mailto:vertexlink33@gmail.com">vertexlink33@gmail.com</a></div></div>
+      <div class="info-row"><div class="info-lbl">Instagram</div><div class="info-val"><a href="https://instagram.com/vertexlink_" target="_blank">@vertexlink_</a></div></div>
+      <div class="info-row"><div class="info-lbl">Délai de réponse</div><div class="info-val">Moins de 24 heures</div></div>
+      <div class="info-row"><div class="info-lbl">Zone</div><div class="info-val">France — 100% remote</div></div>
+    </div>
+    <div class="availability rv" style="animation:fadeUp .6s ease .7s both;opacity:0">
+      <span class="adot"></span>
+      Disponible pour de nouveaux projets
+    </div>
+  </div>
+
+  <div class="c-right">
+    <p class="form-title rv" style="animation:fadeUp .6s ease .3s both;opacity:0">Votre projet en détail</p>
+    <form id="contactForm" action="https://formspree.io/f/xovqqevz" method="POST">
+      <div class="row2">
+        <div class="field rv d1"><label>Prénom *</label><input type="text" name="prenom" placeholder="Jean" required></div>
+        <div class="field rv d1"><label>Email *</label><input type="email" name="email" placeholder="jean@exemple.fr" required></div>
+      </div>
+      <div class="field rv d2">
+        <label>Type de projet</label>
+        <select id="sel" name="service">
+          <option value="" disabled selected>Sélectionner...</option>
+          <option>Site Vitrine — 497 €</option>
+          <option>Landing Page — 297 €</option>
+          <option>Audit & Refonte — Sur devis</option>
+          <option>Autre</option>
+        </select>
+      </div>
+      <div class="field rv d3"><label>Votre projet *</label><textarea name="message" placeholder="Décrivez votre activité et ce que vous souhaitez..." required></textarea></div>
+      <input type="hidden" name="_subject" value="Nouvelle demande — VertexLink">
+      <input type="text" name="_gotcha" style="display:none">
+      <button type="submit" class="btn-submit rv d3">
+        Envoyer la demande
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M7 1l6 6-6 6" stroke="#07070a" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <p class="form-foot rv d4">Devis gratuit · Sans engagement · Réponse sous 24h</p>
+    </form>
+    <div class="success-box" id="successBox">
+      <h3>Message envoyé ✓</h3>
+      <p>On vous recontacte dans les 24 heures.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="f-logo">
+    <svg width="20" height="20" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="5" fill="rgba(0,215,255,.08)" stroke="rgba(0,215,255,.2)" stroke-width="1"/><path d="M6 8L11 18.5L13 15L15 18.5L20 8" stroke="url(#g2)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="g2" x1="6" y1="8" x2="20" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#3d6fff"/><stop offset="1" stop-color="#00d7ff"/></linearGradient></defs></svg>
+    VertexLink
+  </span>
+  <div class="f-links">
+    <a href="index.html">Accueil</a><a href="services.html">Services</a>
+    <a href="realisations.html">Réalisations</a>
+    <a href="mailto:vertexlink33@gmail.com">vertexlink33@gmail.com</a>
+  </div>
+  <span class="f-copy">© 2025 VertexLink</span>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+document.getElementById('sel').addEventListener('change',function(){this.classList.add('f')});
+document.getElementById('contactForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const btn=e.target.querySelector('button');
+  btn.textContent='Envoi en cours...'; btn.disabled=true;
+  try {
+    const r=await fetch(e.target.action,{method:'POST',body:new FormData(e.target),headers:{Accept:'application/json'}});
+    if(r.ok){
+      document.getElementById('contactForm').style.display='none';
+      document.getElementById('successBox').style.display='block';
+    } else { btn.textContent='Erreur — réessayer'; btn.disabled=false; }
+  } catch { btn.textContent='Erreur — réessayer'; btn.disabled=false; }
+});
+</script>
+</body>
+</html>

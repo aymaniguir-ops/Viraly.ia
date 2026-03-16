@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>VertexLink — Agence Web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  padding-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  padding-left: 24px; padding-right: 24px;
+  gap: 0;
+}
+
+/* grille tech fond */
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(0,215,255,.028) 80px),
+    repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(0,215,255,.02) 80px);
+  pointer-events: none;
+}
+
+.hero-inner { position: relative; z-index: 1; max-width: 820px; width: 100% }
+
+/* status pill */
+.status-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: .66rem;
+  color: rgba(0,215,255,.65); letter-spacing: .08em;
+  border: 1px solid rgba(0,215,255,.18);
+  border-radius: 100px; padding: 5px 16px;
+  background: rgba(0,215,255,.04);
+  margin-bottom: 36px;
+  opacity: 0; animation: fadeUp .6s ease .1s forwards;
+}
+.sdot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 8px rgba(34,197,94,.7);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+/* eyebrow */
+.eyebrow {
+  font-family: var(--mono); font-size: .7rem;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(0,215,255,.42);
+  margin-bottom: 22px;
+  opacity: 0; animation: fadeUp .6s ease .28s forwards;
+}
+
+/* headline */
+.hero-h1 {
+  font-family: var(--syne); font-weight: 800;
+  font-size: clamp(2.8rem, 5.2vw, 4.8rem);
+  letter-spacing: -.042em; line-height: 1.02;
+  margin-bottom: 0;
+}
+.hl { display: block; overflow: hidden }
+.hl-w {
+  display: block;
+  transform: translateY(108%);
+  transition: transform 1s cubic-bezier(.16,1,.3,1);
+}
+.hl-w.up { transform: translateY(0) }
+.grad-text {
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* code badge */
+.code-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--mono); font-size: .7rem;
+  border: 1px solid rgba(0,215,255,.14);
+  border-radius: 5px; padding: 7px 16px;
+  background: rgba(0,215,255,.04);
+  margin: 28px 0;
+  opacity: 0; animation: fadeUp .6s ease .72s forwards;
+  flex-wrap: wrap; justify-content: center;
+}
+.tk-g { color: #4ade80 }
+.tk-b { color: var(--cyan) }
+.tk-w { color: rgba(255,255,255,.4) }
+.tk-s { color: rgba(255,255,255,.22) }
+
+/* sub */
+.hero-sub {
+  font-family: var(--mono); font-size: .78rem;
+  color: rgba(255,255,255,.32); line-height: 1.9;
+  max-width: 440px; margin: 0 auto 40px;
+  opacity: 0; animation: fadeUp .6s ease .88s forwards;
+}
+.hero-sub strong { color: rgba(255,255,255,.6); font-weight: 400 }
+
+/* ctas */
+.hero-ctas {
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp .6s ease 1.04s forwards;
+}
+
+/* stat bar */
+.stat-bar {
+  display: flex; justify-content: center;
+  border: 1px solid rgba(0,215,255,.1);
+  border-radius: 10px; overflow: hidden;
+  margin-top: 60px; max-width: 520px;
+  background: rgba(0,0,0,.45); backdrop-filter: blur(16px);
+  opacity: 0; animation: fadeUp .6s ease 1.2s forwards;
+}
+.stat-item { flex: 1; padding: 20px 12px; text-align: center; border-right: 1px solid rgba(0,215,255,.08) }
+.stat-item:last-child { border-right: none }
+.stat-n {
+  font-family: var(--syne); font-weight: 800;
+  font-size: 1.55rem; letter-spacing: -.04em; display: block;
+  background: linear-gradient(135deg, var(--white), var(--cyan));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.stat-l { font-family: var(--mono); font-size: .6rem; color: rgba(255,255,255,.28); display: block; margin-top: 3px; letter-spacing: .05em }
+
+/* scroll indicator */
+.scroll-ind {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: .58rem; color: rgba(255,255,255,.2);
+  letter-spacing: .1em;
+  opacity: 0; animation: fadeUp .6s ease 1.5s forwards;
+}
+.scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, rgba(0,215,255,.4), transparent);
+  animation: scrollDrop 1.8s ease-in-out infinite;
+}
+@keyframes scrollDrop { 0%,100%{transform:scaleY(1);transform-origin:top} 50%{transform:scaleY(.5);transform-origin:top} }
+
+/* ── PROOF NUMBERS ── */
+.proof-sec {
+  position: relative; z-index: 2;
+  background: rgba(7,7,10,.5); backdrop-filter: blur(8px);
+}
+.proof-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1px; background: rgba(0,215,255,.08);
+  border: 1px solid rgba(0,215,255,.1);
+  border-radius: 4px; overflow: hidden;
+}
+.proof-cell {
+  background: rgba(8,8,14,.92);
+  padding: 52px 44px;
+  position: relative; overflow: hidden;
+  transition: background .25s;
+}
+.proof-cell:hover { background: rgba(11,11,18,.97) }
+.proof-cell::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,215,255,.28), transparent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .5s ease;
+}
+.proof-cell:hover::after { transform: scaleX(1) }
+.proof-num {
+  font-family: var(--syne); font-weight: 800;
+  font-size: clamp(2.6rem, 5vw, 4.8rem);
+  letter-spacing: -.05em; line-height: 1;
+  background: linear-gradient(135deg,var(--white) 30%,rgba(0,215,255,.55));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  display: block; margin-bottom: 8px;
+}
+.proof-label {
+  font-family: var(--mono); font-size: .64rem;
+  color: rgba(0,215,255,.45); letter-spacing: .08em;
+  display: block; margin-bottom: 12px; text-transform: uppercase;
+}
+.proof-desc { font-size: .8rem; color: rgba(255,255,255,.3); line-height: 1.7 }
+
+/* ── SERVICES LISTE ── */
+.svc-list { border-top: 1px solid rgba(0,215,255,.1) }
+.svc-row {
+  display: grid; grid-template-columns: 72px 1fr auto;
+  gap: 32px; align-items: center;
+  padding: 36px 0;
+  border-bottom: 1px solid rgba(0,215,255,.06);
+  transition: background .2s; border-radius: 4px;
+}
+.svc-row:hover { background: rgba(0,215,255,.025) }
+.svc-idx { font-family: var(--mono); font-size: .64rem; color: rgba(0,215,255,.28) }
+.svc-body {}
+.svc-name { font-family: var(--syne); font-weight: 700; font-size: 1.2rem; letter-spacing: -.02em; margin-bottom: 7px }
+.svc-tags { display: flex; flex-wrap: wrap; gap: 5px }
+.tag {
+  font-family: var(--mono); font-size: .62rem;
+  color: rgba(0,215,255,.48);
+  border: 1px solid rgba(0,215,255,.12);
+  padding: 2px 9px; border-radius: 3px;
+  background: rgba(0,215,255,.03);
+}
+.svc-price {
+  font-family: var(--syne); font-weight: 800;
+  font-size: 1.4rem; letter-spacing: -.03em;
+  text-align: right; flex-shrink: 0;
+  background: linear-gradient(90deg,var(--white),var(--cyan));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* ── PROCESS ── */
+.proc-steps {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 0; position: relative; margin-top: 56px;
+}
+.proc-steps::before {
+  content: ''; position: absolute; top: 14px;
+  left: 12%; right: 12%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,215,255,.22), rgba(61,111,255,.22), transparent);
+}
+.proc { padding: 0 20px; text-align: center }
+.proc-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  margin: 0 auto 22px; position: relative; z-index: 1;
+  box-shadow: 0 0 14px rgba(0,215,255,.5);
+}
+.proc-n { font-family: var(--mono); font-size: .58rem; color: rgba(0,215,255,.3); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 9px }
+.proc-t { font-family: var(--syne); font-weight: 700; font-size: .92rem; letter-spacing: -.01em; margin-bottom: 9px }
+.proc-d { font-family: var(--mono); font-size: .7rem; color: rgba(255,255,255,.28); line-height: 1.7; font-weight: 300 }
+
+/* ── WORK CARDS ── */
+.work-list { display: flex; flex-direction: column; gap: 10px; margin-top: 52px }
+.wcard {
+  display: grid; grid-template-columns: 1.1fr 1fr;
+  border: 1px solid rgba(0,215,255,.1);
+  border-radius: 6px; overflow: hidden;
+  background: rgba(8,8,14,.88);
+  transition: border-color .3s, transform .3s cubic-bezier(.16,1,.3,1);
+}
+.wcard:hover { border-color: rgba(0,215,255,.28); transform: translateY(-2px) }
+
+/* browser mock */
+.wmock {
+  min-height: 260px; display: flex; flex-direction: column;
+  background: rgba(10,10,18,.96); position: relative; overflow: hidden;
+}
+.wmock::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 55% at 50% -5%, rgba(0,215,255,.07), transparent);
+  opacity: 0; transition: opacity .4s;
+}
+.wcard:hover .wmock::after { opacity: 1 }
+.wbar {
+  height: 26px; background: rgba(0,0,0,.3);
+  border-bottom: 1px solid rgba(0,215,255,.07);
+  display: flex; align-items: center; gap: 5px; padding: 0 12px; flex-shrink: 0;
+}
+.wdot { width: 7px; height: 7px; border-radius: 50% }
+.wdot.r{background:#ff5f57}.wdot.y{background:#febc2e}.wdot.g{background:#28c840}
+.wurl { flex:1; margin-left:6px; font-family:var(--mono); font-size:.58rem; color:rgba(0,215,255,.28) }
+.wbody { padding: 18px; flex: 1; display: flex; flex-direction: column; gap: 9px }
+.wb { border-radius: 2px; background: rgba(255,255,255,.06) }
+.wb.xl{height:11px;width:56%} .wb.lg{height:7px;width:75%} .wb.sm{height:5px;width:42%}
+.wb.ac { background: rgba(0,215,255,.17); width:24%; height:8px }
+
+.winfo {
+  padding: 36px; display: flex; flex-direction: column;
+  justify-content: space-between;
+  border-left: 1px solid rgba(0,215,255,.07);
+}
+.wnum { font-family: var(--mono); font-size: .6rem; color: rgba(0,215,255,.24); margin-bottom: 10px }
+.wname { font-family: var(--syne); font-weight: 800; font-size: 1.5rem; letter-spacing: -.03em; margin-bottom: 10px }
+.wdesc { font-family: var(--mono); font-size: .72rem; color: rgba(255,255,255,.3); line-height: 1.75; font-weight: 300; margin-bottom: 14px }
+.wtags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 18px }
+
+/* score bars */
+.score-block { display: flex; flex-direction: column; gap: 8px }
+.srow { display: flex; align-items: center; gap: 10px }
+.slbl { font-family: var(--mono); font-size: .6rem; color: rgba(255,255,255,.22); width: 82px; flex-shrink: 0 }
+.sbar { flex: 1; height: 2px; background: rgba(255,255,255,.06); border-radius: 1px; overflow: hidden }
+.sfill { height: 100%; width: 0; background: linear-gradient(90deg, var(--blue), var(--cyan)); border-radius: 1px; transition: width 1.1s cubic-bezier(.16,1,.3,1) }
+.sfill.gr { background: linear-gradient(90deg, #16a34a, #4ade80) }
+.sval { font-family: var(--mono); font-size: .65rem; min-width: 34px; text-align: right }
+.sval.g { color: #4ade80 }
+
+/* ── CTA FINAL ── */
+.cta-band {
+  position: relative; z-index: 2;
+  padding: 140px 72px;
+  text-align: center;
+  border-top: 1px solid rgba(0,215,255,.08);
+  overflow: hidden;
+}
+.cta-band::before {
+  content: ''; position: absolute;
+  top: -240px; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 700px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0,215,255,.055), transparent 68%);
+  pointer-events: none;
+}
+.cta-band h2 {
+  font-family: var(--syne); font-weight: 800;
+  font-size: clamp(2.2rem, 5.5vw, 5rem);
+  letter-spacing: -.042em; line-height: 1.02;
+  margin-bottom: 40px; position: relative;
+}
+.cta-band p {
+  font-family: var(--mono); font-size: .68rem;
+  color: rgba(255,255,255,.22); letter-spacing: .08em;
+  text-transform: uppercase; margin-top: 20px; position: relative;
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .hero { padding-top: 80px }
+  .stat-bar { max-width: 100% }
+  .proof-grid { grid-template-columns: 1fr }
+  .svc-row { grid-template-columns: 1fr; gap: 8px }
+  .svc-price { text-align: left }
+  .proc-steps { grid-template-columns: 1fr 1fr; gap: 40px }
+  .proc-steps::before { display: none }
+  .wcard { grid-template-columns: 1fr }
+  .winfo { border-left: none; border-top: 1px solid rgba(0,215,255,.07); padding: 22px }
+  .cta-band { padding: 80px 20px }
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="prog"></div>
+<canvas id="cvs"></canvas>
+
+<nav>
+  <a href="index.html" class="logo">
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+      <rect width="26" height="26" rx="5" fill="rgba(0,215,255,.08)" stroke="rgba(0,215,255,.22)" stroke-width="1"/>
+      <path d="M6 8L11 18.5L13 15L15 18.5L20 8" stroke="url(#g)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      <defs><linearGradient id="g" x1="6" y1="8" x2="20" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#3d6fff"/><stop offset="1" stop-color="#00d7ff"/></linearGradient></defs>
+    </svg>
+    VertexLink
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="on">Accueil</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="realisations.html">Réalisations</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="contact.html" class="nav-cta">→ Démarrer un projet</a>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-inner">
+
+    <div class="status-pill">
+      <span class="sdot"></span>
+      Disponible · Livraison 14 jours
+    </div>
+
+    <p class="eyebrow">Agence Web · Développement sur mesure</p>
+
+    <h1 class="hero-h1">
+      <span class="hl"><span class="hl-w" id="w1">Sites web qui</span></span>
+      <span class="hl"><span class="hl-w grad-text" id="w2">convertissent.</span></span>
+    </h1>
+
+    <div class="code-badge">
+      <span class="tk-g">const</span>&nbsp;
+      <span class="tk-b">site</span>&nbsp;
+      <span class="tk-s">=</span>&nbsp;
+      <span class="tk-w">vertexlink</span><span class="tk-s">.</span><span class="tk-b">build</span><span class="tk-s">({</span>&nbsp;
+      <span class="tk-g">lighthouse</span><span class="tk-s">:</span>&nbsp;<span class="tk-b">95+</span><span class="tk-s">,</span>&nbsp;
+      <span class="tk-g">days</span><span class="tk-s">:</span>&nbsp;<span class="tk-b">14</span><span class="tk-s">,</span>&nbsp;
+      <span class="tk-g">template</span><span class="tk-s">:</span>&nbsp;<span class="tk-b">false</span>&nbsp;
+      <span class="tk-s">})</span>
+    </div>
+
+    <p class="hero-sub">
+      <strong>HTML · CSS · JavaScript</strong> — zéro template, zéro WordPress.<br>
+      Chaque ligne de code écrite à la main pour votre projet.
+    </p>
+
+    <div class="hero-ctas">
+      <a href="contact.html" class="btn-p" id="mag">
+        Démarrer un projet
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 7.5h13M8 2l5 5.5L8 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="realisations.html" class="btn-s">Voir les projets</a>
+    </div>
+
+    <div class="stat-bar">
+      <div class="stat-item"><span class="stat-n" id="sn1">0</span><span class="stat-l">Lighthouse score</span></div>
+      <div class="stat-item"><span class="stat-n" id="sn2">0j</span><span class="stat-l">Délai max</span></div>
+      <div class="stat-item"><span class="stat-n" id="sn3">0</span><span class="stat-l">Projets livrés</span></div>
+    </div>
+  </div>
+
+  <div class="scroll-ind">
+    <div class="scroll-line"></div>
+    SCROLL
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mq-wrap">
+  <div class="mq-track">
+    <span class="mq-item">HTML / CSS / JS<span class="mq-dot"></span></span>
+    <span class="mq-item">Canvas API<span class="mq-dot"></span></span>
+    <span class="mq-item">SEO Technique<span class="mq-dot"></span></span>
+    <span class="mq-item">Core Web Vitals<span class="mq-dot"></span></span>
+    <span class="mq-item">Mobile First<span class="mq-dot"></span></span>
+    <span class="mq-item">Netlify Deploy<span class="mq-dot"></span></span>
+    <span class="mq-item">Lighthouse 100<span class="mq-dot"></span></span>
+    <span class="mq-item">Pixel Meta<span class="mq-dot"></span></span>
+    <span class="mq-item">Schema.org<span class="mq-dot"></span></span>
+    <span class="mq-item">UX / UI Design<span class="mq-dot"></span></span>
+    <span class="mq-item">Formspree<span class="mq-dot"></span></span>
+    <span class="mq-item">HTML / CSS / JS<span class="mq-dot"></span></span>
+    <span class="mq-item">Canvas API<span class="mq-dot"></span></span>
+    <span class="mq-item">SEO Technique<span class="mq-dot"></span></span>
+    <span class="mq-item">Core Web Vitals<span class="mq-dot"></span></span>
+    <span class="mq-item">Mobile First<span class="mq-dot"></span></span>
+    <span class="mq-item">Netlify Deploy<span class="mq-dot"></span></span>
+    <span class="mq-item">Lighthouse 100<span class="mq-dot"></span></span>
+    <span class="mq-item">Pixel Meta<span class="mq-dot"></span></span>
+    <span class="mq-item">Schema.org<span class="mq-dot"></span></span>
+    <span class="mq-item">UX / UI Design<span class="mq-dot"></span></span>
+    <span class="mq-item">Formspree<span class="mq-dot"></span></span>
+  </div>
+</div>
+
+<!-- ══ PROOF ══ -->
+<section class="sec proof-sec">
+  <div class="wrap">
+    <p class="lbl rv">Ce qu'on garantit</p>
+    <div class="proof-grid">
+      <div class="proof-cell rv d1">
+        <span class="proof-num">95+</span>
+        <span class="proof-label">Lighthouse Score</span>
+        <p class="proof-desc">Performance, SEO, Accessibilité — auditées et documentées sur chaque livraison.</p>
+      </div>
+      <div class="proof-cell rv d2">
+        <span class="proof-num">14j</span>
+        <span class="proof-label">Délai maximum</span>
+        <p class="proof-desc">Brief → maquette validée → code → mise en ligne. Pas de retards, pas d'excuses.</p>
+      </div>
+      <div class="proof-cell rv d3">
+        <span class="proof-num">0</span>
+        <span class="proof-label">Template utilisé</span>
+        <p class="proof-desc">Zéro WordPress, zéro Wix. Chaque ligne de code écrite pour votre projet.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SERVICES ══ -->
+<section class="sec sec-sm">
+  <div class="wrap">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid rgba(0,215,255,.1);padding-bottom:18px;margin-bottom:0" class="rv">
+      <p class="lbl" style="margin:0">Prestations</p>
+      <span style="font-family:var(--syne);font-weight:800;font-size:clamp(1.5rem,2.8vw,2.2rem);letter-spacing:-.03em">Ce qu'on construit</span>
+    </div>
+    <div class="svc-list">
+      <div class="svc-row rv">
+        <span class="svc-idx">01</span>
+        <div class="svc-body">
+          <div class="svc-name">Site Vitrine</div>
+          <div class="svc-tags"><span class="tag">Multi-pages</span><span class="tag">SEO</span><span class="tag">Mobile-first</span><span class="tag">14 jours</span></div>
+        </div>
+        <div class="svc-price">497 €</div>
+      </div>
+      <div class="svc-row rv d1">
+        <span class="svc-idx">02</span>
+        <div class="svc-body">
+          <div class="svc-name">Landing Page</div>
+          <div class="svc-tags"><span class="tag">Copywriting</span><span class="tag">Pixel Meta</span><span class="tag">Analytics</span><span class="tag">7 jours</span></div>
+        </div>
+        <div class="svc-price">297 €</div>
+      </div>
+      <div class="svc-row rv d2">
+        <span class="svc-idx">03</span>
+        <div class="svc-body">
+          <div class="svc-name">Audit & Refonte</div>
+          <div class="svc-tags"><span class="tag">Lighthouse Audit</span><span class="tag">Core Web Vitals</span><span class="tag">UX/UI</span></div>
+        </div>
+        <div class="svc-price">Devis</div>
+      </div>
+    </div>
+    <div style="padding-top:20px;text-align:right" class="rv d3">
+      <a href="services.html" style="font-family:var(--mono);font-size:.7rem;color:rgba(0,215,255,.45);letter-spacing:.05em;border-bottom:1px solid rgba(0,215,255,.2);padding-bottom:2px;transition:color .2s">Voir le détail →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROCESS ══ -->
+<section class="sec sec-sm">
+  <div class="wrap">
+    <p class="lbl rv">Méthode</p>
+    <h2 class="sec-title rv d1">De l'idée au live <em>en 14 jours.</em></h2>
+    <div class="proc-steps">
+      <div class="proc rv"><div class="proc-dot"></div><div class="proc-n">01 / Brief</div><div class="proc-t">Analyse</div><p class="proc-d">Objectif, cible, positionnement. On fixe le cap avant de coder.</p></div>
+      <div class="proc rv d1"><div class="proc-dot"></div><div class="proc-n">02 / Design</div><div class="proc-t">Maquette</div><p class="proc-d">Haute fidélité validée. Ce qu'on approuve, on le code exactement.</p></div>
+      <div class="proc rv d2"><div class="proc-dot"></div><div class="proc-n">03 / Dev</div><div class="proc-t">Code</div><p class="proc-d">HTML/CSS/JS pur. Responsive, SEO, Core Web Vitals. Aucun raccourci.</p></div>
+      <div class="proc rv d3"><div class="proc-dot"></div><div class="proc-n">04 / Live</div><div class="proc-t">Livraison</div><p class="proc-d">Netlify, DNS configuré, domaine pointé. Votre site est en ligne.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WORK ══ -->
+<section class="sec sec-sm">
+  <div class="wrap">
+    <p class="lbl rv">Réalisations</p>
+    <h2 class="sec-title rv d1">Projets <em>récents.</em></h2>
+    <div class="work-list">
+
+      <!-- SocialForma -->
+      <div class="wcard rv">
+        <div class="wmock">
+          <div class="wbar"><span class="wdot r"></span><span class="wdot y"></span><span class="wdot g"></span><span class="wurl">socialforma.fr</span></div>
+          <div class="wbody">
+            <div class="wb xl"></div><div class="wb lg"></div><div class="wb sm"></div>
+            <div style="margin-top:8px"><div class="wb ac"></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:14px">
+              <div style="background:rgba(0,215,255,.05);border-radius:3px;padding:11px;border:1px solid rgba(0,215,255,.1)"><div style="height:5px;background:rgba(0,215,255,.22);border-radius:1px"></div><div class="wb sm" style="margin-top:5px"></div></div>
+              <div style="background:rgba(255,255,255,.03);border-radius:3px;padding:11px"><div class="wb lg" style="height:5px"></div><div class="wb sm" style="margin-top:5px"></div></div>
+              <div style="background:rgba(255,255,255,.03);border-radius:3px;padding:11px"><div class="wb lg" style="height:5px"></div><div class="wb sm" style="margin-top:5px"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="winfo">
+          <div>
+            <div class="wnum">Projet 01 / 03</div>
+            <div class="wname">SocialForma</div>
+            <p class="wdesc">Cabinet conseil URSSAF. Site vitrine multi-pages, SEO local optimisé, formulaire de prise de RDV intégré.</p>
+            <div class="wtags"><span class="tag">Site vitrine</span><span class="tag">SEO</span><span class="tag">Formspree</span><span class="tag">Netlify</span></div>
+          </div>
+          <div class="score-block">
+            <div class="srow"><span class="slbl">Performance</span><div class="sbar"><div class="sfill" data-v=".98"></div></div><span class="sval g">98</span></div>
+            <div class="srow"><span class="slbl">SEO</span><div class="sbar"><div class="sfill" data-v="1"></div></div><span class="sval g">100</span></div>
+            <div class="srow"><span class="slbl">Accessibilité</span><div class="sbar"><div class="sfill" data-v=".95"></div></div><span class="sval">95</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Viraly.ia -->
+      <div class="wcard rv d1">
+        <div class="wmock" style="background:#0a0814">
+          <div class="wbar"><span class="wdot r"></span><span class="wdot y"></span><span class="wdot g"></span><span class="wurl">viraly.ia</span></div>
+          <div class="wbody">
+            <div style="height:12px;width:52%;background:rgba(124,58,237,.38);border-radius:2px"></div>
+            <div class="wb lg" style="margin-top:7px"></div><div class="wb sm" style="margin-top:5px"></div>
+            <div style="margin-top:10px"><div style="height:8px;width:28%;background:rgba(124,58,237,.28);border-radius:2px"></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:14px">
+              <div style="background:rgba(124,58,237,.07);border-radius:3px;padding:10px;border:1px solid rgba(124,58,237,.14)"><div style="height:5px;background:rgba(124,58,237,.28);border-radius:1px"></div><div class="wb sm" style="margin-top:5px"></div></div>
+              <div style="background:rgba(124,58,237,.07);border-radius:3px;padding:10px;border:1px solid rgba(124,58,237,.14)"><div style="height:5px;background:rgba(124,58,237,.28);border-radius:1px"></div><div class="wb sm" style="margin-top:5px"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="winfo">
+          <div>
+            <div class="wnum">Projet 02 / 03</div>
+            <div class="wname">Viraly.ia</div>
+            <p class="wdesc">SaaS IA de génération de contenu viral. Landing page haute conversion, Canvas API, animations particules.</p>
+            <div class="wtags"><span class="tag">Landing Page</span><span class="tag">SaaS</span><span class="tag">Canvas API</span><span class="tag">IA</span></div>
+          </div>
+          <div class="score-block">
+            <div class="srow"><span class="slbl">Performance</span><div class="sbar"><div class="sfill" data-v=".97"></div></div><span class="sval g">97</span></div>
+            <div class="srow"><span class="slbl">SEO</span><div class="sbar"><div class="sfill" data-v=".98"></div></div><span class="sval g">98</span></div>
+            <div class="srow"><span class="slbl">Conversion</span><div class="sbar"><div class="sfill gr" data-v=".73"></div></div><span class="sval g">7.3%</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:28px" class="rv d2">
+      <a href="realisations.html" class="btn-s">Voir tous les projets →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA FINAL ══ -->
+<div class="cta-band rv">
+  <p class="lbl" style="justify-content:center;margin-bottom:22px">Prêt ?</p>
+  <h2>Votre site,<br>en <em class="grad-text">14 jours.</em></h2>
+  <a href="contact.html" class="btn-p" style="display:inline-flex;margin-top:0" id="mag2">
+    Démarrer maintenant
+    <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 7.5h13M8 2l5 5.5L8 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+  <p>Devis gratuit · Réponse sous 24h · Sans engagement</p>
+</div>
+
+<footer>
+  <span class="f-logo">
+    <svg width="20" height="20" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="5" fill="rgba(0,215,255,.08)" stroke="rgba(0,215,255,.2)" stroke-width="1"/><path d="M6 8L11 18.5L13 15L15 18.5L20 8" stroke="url(#g2)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="g2" x1="6" y1="8" x2="20" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#3d6fff"/><stop offset="1" stop-color="#00d7ff"/></linearGradient></defs></svg>
+    VertexLink
+  </span>
+  <div class="f-links">
+    <a href="services.html">Services</a>
+    <a href="realisations.html">Réalisations</a>
+    <a href="contact.html">Contact</a>
+    <a href="mailto:vertexlink33@gmail.com">vertexlink33@gmail.com</a>
+    <a href="https://instagram.com/vertexlink_" target="_blank">@vertexlink_</a>
+  </div>
+  <span class="f-copy">© 2025 VertexLink</span>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+/* headline reveal */
+['w1','w2'].forEach((id,i)=>setTimeout(()=>{const e=document.getElementById(id);if(e)e.classList.add('up')},380+i*190));
+
+/* counters */
+function count(id,target,suf,delay){
+  const el=document.getElementById(id); if(!el) return;
+  setTimeout(()=>{let v=0;const s=Math.ceil(target/28);const t=setInterval(()=>{v=Math.min(v+s,target);el.textContent=v+suf;if(v>=target)clearInterval(t)},44)},delay);
+}
+count('sn1',100,'',1300); count('sn2',14,'j',1450); count('sn3',3,'',1600);
+
+/* magnetic buttons */
+['mag','mag2'].forEach(id=>{
+  const el=document.getElementById(id); if(!el) return;
+  el.addEventListener('mousemove',e=>{
+    const r=el.getBoundingClientRect();
+    el.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.15}px,${(e.clientY-r.top-r.height/2)*.15}px) translateY(-2px)`;
+  });
+  el.addEventListener('mouseleave',()=>{
+    el.style.transition='transform .5s cubic-bezier(.16,1,.3,1),box-shadow .3s';
+    el.style.transform='';
+    setTimeout(()=>el.style.transition='',500);
+  });
+});
+
+/* process dots pulse */
+const ps=document.querySelector('.proc-steps');
+if(ps) new IntersectionObserver(([e])=>{if(e.isIntersecting)ps.querySelectorAll('.proc-dot').forEach((d,i)=>setTimeout(()=>{d.style.transform='scale(1.6)';d.style.transition='.3s ease';setTimeout(()=>d.style.transform='',320)},i*160))},{threshold:.3}).observe(ps);
+</script>
+</body>
+</html>
