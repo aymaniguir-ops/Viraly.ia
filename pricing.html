@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@700;800&family=Instrument+Serif:ital@1&display=block" rel="stylesheet"/>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Viraly — Tarifs</title>
+<style>/* ─────────────────────────────────────────
+   DESIGN TOKENS
+───────────────────────────────────────── */
+
+:root{
+  --bg:#0D0D0F;--bg2:#111114;--bg3:#16161A;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
+  --text:#EEEEF0;--text2:#A0A0AA;--text3:#606068;
+  --gold:#E8B84B;--gold2:#F5D06A;--gold-dim:rgba(232,184,75,.12);
+  --radius:8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Inter',sans-serif;font-weight:400;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::-webkit-scrollbar{width:1px;}::-webkit-scrollbar-thumb{background:var(--border2);}
+#cur{display:none;}
+#cur-ring{display:none;}
+@keyframes tick{to{transform:translateX(-50%);}}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+@keyframes fadeUp{0%{opacity:0;transform:translateY(8px);}100%{opacity:1;transform:translateY(0);}}
+.rv {opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;}
+.rv2{opacity:0;transform:translateY(16px);transition:opacity .6s .1s ease,transform .6s .1s ease;}
+.rv3{opacity:0;transform:translateY(16px);transition:opacity .6s .2s ease,transform .6s .2s ease;}
+.rv.in,.rv2.in,.rv3.in{opacity:1;transform:translateY(0);}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;border-bottom:1px solid transparent;transition:all .3s ease;background:rgba(13,13,15,.8);backdrop-filter:blur(24px);border-bottom-color:var(--border);}
+nav.solid{padding:14px 48px;}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;letter-spacing:-.02em;color:var(--text);text-decoration:none;}
+.nav-brand span{background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 60%,#fff8e0 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 8px rgba(232,184,75,.5));}
+.nav-links{display:flex;gap:32px;align-items:center;}
+.nav-links a{font-size:13px;color:var(--text2);text-decoration:none;transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--text);}
+.nav-cta{font-family:'Inter',sans-serif;font-size:13px;font-weight:500;background:var(--gold);color:#0D0D0F;border:none;padding:9px 20px;border-radius:6px;cursor:pointer;transition:all .2s;}
+.nav-cta:hover{background:var(--gold2);}
+.section-label{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.section-label::before{content:'';width:16px;height:1px;background:var(--gold);}
+.section-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(30px,3.8vw,48px);letter-spacing:-.03em;line-height:1.0;color:var(--text);margin-bottom:14px;}
+.section-title .accent{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.section-desc{font-size:15px;color:var(--text2);line-height:1.7;}
+.btn-primary{font-family:'Inter',sans-serif;font-size:13px;font-weight:500;background:var(--gold);color:#0D0D0F;border:none;padding:12px 28px;border-radius:6px;cursor:pointer;transition:all .2s;}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(232,184,75,.2);}
+.btn-ghost{font-family:'Inter',sans-serif;font-size:13px;font-weight:400;background:transparent;color:var(--text2);border:1px solid var(--border2);padding:12px 28px;border-radius:6px;cursor:pointer;transition:all .2s;}
+.btn-ghost:hover{color:var(--text);background:rgba(255,255,255,.04);}
+footer{padding:40px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;border-top:1px solid var(--border);}
+.f-brand{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;letter-spacing:-.02em;color:var(--text);}
+.f-brand span{color:var(--gold);}
+.f-links{display:flex;gap:24px;}
+.f-links a{font-size:12px;color:var(--text3);text-decoration:none;transition:color .2s;}
+.f-links a:hover{color:var(--text2);}
+.f-copy{font-size:12px;color:var(--text3);width:100%;}
+.ticker{padding:11px 0;overflow:hidden;border-bottom:1px solid var(--border);background:var(--bg2);}
+.tk-track{display:flex;white-space:nowrap;animation:tick 20s linear infinite;}
+.tk-item{font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);padding:0 28px;flex-shrink:0;display:flex;align-items:center;gap:8px;}
+.tk-item::after{content:'·';color:var(--gold);}
+#load-screen{position:fixed;inset:0;background:var(--bg);z-index:500;display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px;}
+.load-ring{width:52px;height:52px;position:relative;display:flex;align-items:center;justify-content:center;}
+.load-ring::after{content:'';position:absolute;inset:0;border-radius:50%;border:1.5px solid transparent;border-top-color:var(--gold);animation:spin 1s linear infinite;}
+.load-v{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--text);}
+.load-msg{font-size:12px;color:var(--text3);letter-spacing:.06em;animation:pulse 2s ease infinite;}
+.load-bar{width:160px;height:1px;background:var(--border);}
+.load-fill{height:100%;background:var(--gold);transition:width 1s ease;width:0%;}
+@media(max-width:900px){nav{padding:13px 18px;}.nav-links{display:none;}footer{padding:28px 18px;}}
+
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--lgrey); border-radius: 2px; }
+
+/* ─────────────────────────────────────────
+   CUSTOM CURSOR
+───────────────────────────────────────── */
+#cur{display:none;}
+#cur-ring{display:none;}
+body.cursor-hover #cur{display:none;}
+body.cursor-hover #cur-ring{display:none;}
+
+/* ─────────────────────────────────────────
+   KEYFRAMES
+───────────────────────────────────────── */
+
+/* intro curtains */
+@keyframes curtainL {
+  0%   { transform: translateX(0);     clip-path: inset(0); }
+  100% { transform: translateX(-100%); }
+}
+@keyframes curtainR {
+  0%   { transform: translateX(0);    clip-path: inset(0); }
+  100% { transform: translateX(100%); }
+}
+
+/* intro logo word */
+@keyframes wordReveal {
+  0%   { opacity: 0; letter-spacing: .18em; transform: translateY(8px); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; letter-spacing: .06em; transform: translateY(0); }
+}
+
+/* intro sub-labels + line */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* site entrance after curtains */
+@keyframes siteIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* hero stagger */
+@keyframes heroUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* utilities */
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes spin   { to   { transform: rotate(360deg); } }
+@keyframes pulse  { 0%,100% { opacity: 1; } 50% { opacity: .28; } }
+
+/* ─────────────────────────────────────────
+   INTRO — cinematic curtain
+───────────────────────────────────────── */
+#intro {
+  position: fixed; inset: 0; z-index: 1000;
+  display: grid; grid-template-columns: 1fr 1fr;
+  pointer-events: none;
+  /* will be removed from DOM, no fade needed */
+}
+#intro-l, #intro-r {
+  background: var(--ink-dark);
+  display: flex; align-items: center; justify-content: center;
+  will-change: transform;
+}
+#intro-l { border-right: 1px solid #1c1c1c; }
+
+/* curtain trigger class */
+#intro.open #intro-l {
+  animation: curtainL 1.0s var(--ease-inout) forwards;
+}
+#intro.open #intro-r {
+  animation: curtainR 1.0s var(--ease-inout) .06s forwards;
+}
+
+/* logo in the centre */
+#intro-word {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(44px, 8.5vw, 102px);
+  color: var(--paper);
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  opacity: 0;
+  /* starts: letter-spacing wide → tightens as it fades in */
+  animation: wordReveal 1s var(--ease-out) .3s forwards;
+}
+
+/* corner labels */
+#intro-sub-l {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--t-2xs); letter-spacing: .26em; text-transform: uppercase;
+  color: #282828;
+  opacity: 0; animation: fadeUp .45s ease 1.1s forwards;
+}
+#intro-sub-r {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--t-2xs); letter-spacing: .26em; text-transform: uppercase;
+  color: #282828; text-align: right;
+  opacity: 0; animation: fadeUp .45s ease 1.4s forwards;
+}
+
+/* horizontal gold divider at mid-screen */
+#intro-line {
+  position: absolute; top: 50%; left: 0; right: 0;
+  height: 1px; margin-top: -1px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold2) 50%, transparent 100%);
+  opacity: 0; animation: fadeUp .5s ease 1.8s forwards;
+}
+
+/* ─────────────────────────────────────────
+   SITE WRAPPER  (hidden until intro done)
+───────────────────────────────────────── */
+.site-wrap {
+  opacity: 0;
+}
+.site-wrap.visible {
+  animation: siteIn .9s var(--ease-out) forwards;
+}
+
+/* ─────────────────────────────────────────
+   NAV
+───────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px var(--side);
+  transition: padding .4s var(--ease-out),
+              background .4s ease,
+              border-color .35s ease,
+              box-shadow .35s ease;
+}
+nav.solid {
+  background: rgba(247, 242, 234, .96);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border-bottom: 1px solid var(--lgrey);
+  padding: 13px var(--side);
+  box-shadow: 0 1px 0 rgba(0,0,0,.04);
+}
+.nav-brand {
+  font-family: 'Anton', sans-serif;
+  font-size: 19px; letter-spacing: .1em;
+  color: var(--ink); text-decoration: none;
+  transition: opacity .2s ease;
+}
+.nav-brand:hover { opacity: .6; }
+.nav-brand span { color: var(--gold); }
+
+.nav-links { display: flex; gap: 32px; }
+.nav-links a {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--t-2xs); letter-spacing: .18em; text-transform: uppercase;
+  color: var(--grey); text-decoration: none;
+  transition: color .22s ease;
+  position: relative; padding-bottom: 2px;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute; bottom: -3px; left: 0; right: 0;
+  height: 1px; background: var(--gold);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .3s var(--ease-out);
+}
+.nav-links a:hover, .nav-links a.active { color: var(--ink); }
+.nav-links a.active::after, .nav-links a:hover::after { transform: scaleX(1); }
+
+.nav-cta {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--t-2xs); letter-spacing: .14em; text-transform: uppercase;
+  background: var(--ink); color: var(--paper);
+  border: none; padding: 10px 24px; cursor: pointer;
+  transition: background .28s ease, color .28s ease,
+              transform .22s var(--ease-out), box-shadow .22s ease;
+}
+.nav-cta:hover {
+  background: var(--gold); color: var(--ink);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(181,144,16,.28);
+}
+
+/* ─────────────────────────────────────────
+   BUTTONS
+───────────────────────────────────────── */
+.btn {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--t-2xs); letter-spacing: .16em; text-transform: uppercase;
+  border: none; padding: 14px 32px; cursor: pointer;
+  position: relative; overflow: hidden; display: inline-block; line-height: 1;
+  transition: transform .25s var(--ease-out), box-shadow .25s ease;
+}
+.btn span { position: relative; z-index: 1; transition: color .3s ease; }
+.btn::after {
+  content: ''; position: absolute; inset: 0;
+  transform: translateX(-101%);
+  transition: transform .4s var(--ease-inout);
+}
+.btn:hover  { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); transition-duration: .08s; }
+.btn:hover::after { transform: translateX(0); }
+
+.btn-dark { background: var(--ink); color: var(--paper); }
+.btn-dark::after { background: var(--gold); }
+.btn-dark:hover { box-shadow: 0 10px 28px rgba(12,12,12,.2); }
+.btn-dark:hover span { color: var(--ink); }
+
+.btn-outline { background: transparent; color: var(--grey); border: 1px solid var(--lgrey); }
+.btn-outline::after { background: var(--ink); }
+.btn-outline:hover { border-color: var(--ink); box-shadow: 0 10px 28px rgba(12,12,12,.1); }
+.btn-outline:hover span { color: var(--paper); }
+
+.btn-gold { background: var(--gold); color: var(--ink); }
+.btn-gold::after { background: var(--ink); }
+.btn-gold:hover { box-shadow: 0 10px 28px rgba(181,144,16,.32); }
+.btn-gold:hover span { color: var(--paper); }
+
+/* ─────────────────────────────────────────
+   TICKER BANDS
+───────────────────────────────────────── */
+.ticker-band        { background: var(--ink); padding: 11px 0; overflow: hidden; }
+.ticker-band.gold   { background: var(--gold); padding: 10px 0; }
+
+.ticker-track      { display: flex; white-space: nowrap; animation: ticker 24s linear infinite; }
+.ticker-track.fast { animation-duration: 15s; }
+
+.ticker-item {
+  font-family: 'Anton', sans-serif;
+  font-size: 12px; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--paper); padding: 0 28px; flex-shrink: 0;
+}
+.ticker-item .dot { color: var(--gold); margin: 0 5px; }
+.gold .ticker-item      { color: var(--ink); }
+.gold .ticker-item .dot { color: rgba(12,12,12,.3); }
+
+/* ─────────────────────────────────────────
+   SHARED SECTION TYPOGRAPHY
+───────────────────────────────────────── */
+.sec-num {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--t-2xs); letter-spacing: .22em; text-transform: uppercase;
+  color: var(--grey2); display: block; margin-bottom: 14px;
+}
+.sec-title {
+  font-family: 'Anton', sans-serif;
+  /* hierarchy: clearly smaller than hero, larger than body — the sweet spot */
+  font-size: clamp(28px, 3.8vw, 52px);
+  line-height: .97; letter-spacing: -.008em; color: var(--ink);
+}
+.sec-title em {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 500; color: var(--gold);
+}
+.sec-desc {
+  font-size: var(--t-lg);
+  font-weight: 300; font-style: italic;
+  color: var(--ink); line-height: 1.72;
+}
+
+/* ─────────────────────────────────────────
+   SCROLL REVEAL  — subtle, premium
+───────────────────────────────────────── */
+.rv  { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease-out), transform .7s var(--ease-out); }
+.rv2 { opacity: 0; transform: translateY(18px); transition: opacity .7s .12s var(--ease-out), transform .7s .12s var(--ease-out); }
+.rv3 { opacity: 0; transform: translateY(18px); transition: opacity .7s .24s var(--ease-out), transform .7s .24s var(--ease-out); }
+.rv.in, .rv2.in, .rv3.in { opacity: 1; transform: translateY(0); }
+
+/* ─────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────── */
+footer {
+  background: var(--ink-dark);
+  padding: 40px var(--side);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 14px;
+  border-top: 2px solid var(--gold);
+}
+.footer-brand { font-family: 'Anton', sans-serif; font-size: 20px; letter-spacing: .1em; color: var(--paper); }
+.footer-brand span { color: var(--gold); }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--t-2xs); letter-spacing: .14em; text-transform: uppercase;
+  color: #383838; text-decoration: none;
+  transition: color .22s ease;
+}
+.footer-links a:hover { color: var(--gold); }
+.footer-copy {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--t-2xs); letter-spacing: .1em; text-transform: uppercase;
+  color: #2c2c2c; width: 100%;
+}
+
+/* ─────────────────────────────────────────
+   FORMS (app.html)
+───────────────────────────────────────── */
+.f-group { display: flex; flex-direction: column; gap: 6px; }
+.f-group label {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--t-2xs); letter-spacing: .18em; text-transform: uppercase;
+  color: var(--grey);
+}
+.f-group input, .f-group textarea, .f-group select {
+  background: var(--paper2); border: none;
+  border-bottom: 2px solid var(--lgrey);
+  padding: 11px 4px; font-family: inherit; font-size: var(--t-md);
+  color: var(--ink); outline: none;
+  transition: border-color .25s ease; resize: vertical;
+}
+.f-group input:focus, .f-group textarea:focus, .f-group select:focus {
+  border-bottom-color: var(--gold);
+}
+.f-group select option { background: var(--paper2); }
+.f-sec-label {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--t-2xs); letter-spacing: .22em; text-transform: uppercase;
+  color: var(--grey2);
+  padding-bottom: 10px; border-bottom: 1px solid var(--lgrey);
+  display: block; margin-bottom: 16px; margin-top: 26px;
+}
+.plt-btn {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--t-2xs); letter-spacing: .14em; text-transform: uppercase;
+  background: none; border: 1px solid var(--lgrey);
+  padding: 8px 14px; color: var(--grey); cursor: pointer;
+  transition: background .22s ease, color .22s ease, border-color .22s ease;
+}
+.plt-btn.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.f-err {
+  background: rgba(196,30,58,.05); border-left: 3px solid var(--red);
+  padding: 11px 16px; color: var(--red); font-size: var(--t-md);
+  margin-top: 16px; display: none;
+}
+
+/* ─────────────────────────────────────────
+   LOADING SCREEN
+───────────────────────────────────────── */
+#load-screen {
+  position: fixed; inset: 0; background: var(--ink-dark); z-index: 500;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 24px;
+}
+.load-ring {
+  width: 68px; height: 68px; position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.load-ring::before { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(247,242,234,.07); }
+.load-ring::after  { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 1px solid transparent; border-top-color: var(--gold); animation: spin 1.4s linear infinite; }
+.load-v { font-family: 'Anton', sans-serif; font-size: 19px; color: var(--paper); letter-spacing: .06em; }
+.load-step {
+  font-family: 'Space Mono', monospace; font-size: var(--t-xs);
+  letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(247,242,234,.28); animation: pulse 1.9s ease infinite;
+  text-align: center; max-width: 230px;
+}
+.load-bar  { width: 160px; height: 1px; background: rgba(247,242,234,.07); }
+.load-fill { height: 100%; background: var(--gold); transition: width 1.3s var(--ease-out); width: 0%; }
+
+/* ─────────────────────────────────────────
+   RESPONSIVE GLOBALS
+───────────────────────────────────────── */
+@media (max-width: 1200px) {
+  :root { --side: 40px; }
+  nav      { padding: 20px var(--side); }
+  nav.solid { padding: 12px var(--side); }
+}
+@media (max-width: 900px) {
+  :root { --side: 24px; }
+  nav      { padding: 15px var(--side); }
+  nav.solid { padding: 11px var(--side); }
+  .nav-links { display: none; }
+  .sec-title { font-size: clamp(26px, 6vw, 40px); }
+  footer { padding: 32px var(--side); }
+}
+</style>
+<style>
+.page-hero{
+  padding:120px 52px 64px;border-bottom:1px solid var(--lgrey);
+  display:grid;grid-template-columns:1fr 1fr;align-items:end;gap:60px;
+}
+.billing-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:12px;}
+.bill-note{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);}
+.billing-toggle{display:flex;border:1px solid var(--lgrey);}
+.bill-btn{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:none;border:none;padding:12px 24px;color:var(--grey);cursor:pointer;transition:all .2s;}
+.bill-btn.active{background:var(--ink);color:var(--paper);}
+.bill-save{color:var(--gold);}
+
+/* Plans grid */
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--lgrey);}
+.plan{
+  padding:36px 28px;border-right:1px solid var(--lgrey);
+  position:relative;transition:background .2s;
+}
+.plan:last-child{border-right:none;}
+.plan:hover{background:var(--paper2);}
+.plan.featured{background:var(--ink);color:var(--paper);}
+.plan.featured:hover{background:#0f0f0f;}
+.plan-top-bar{position:absolute;top:0;left:0;right:0;height:3px;}
+.plan-top-bar.grey{background:var(--lgrey);}
+.plan-top-bar.purple{background:linear-gradient(90deg,#7c6fcf,#a78bfa);}
+.plan-top-bar.gold{background:linear-gradient(90deg,var(--gold),#d4af37);}
+.plan-eyebrow{
+  font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:.22em;text-transform:uppercase;
+  margin-bottom:18px;display:block;
+}
+.plan.featured .plan-eyebrow{color:rgba(245,240,232,.35);}
+.plan-eyebrow:not(.featured .plan-eyebrow){color:var(--grey);}
+.featured-tag{
+  position:absolute;top:24px;right:24px;
+  border:1px solid rgba(245,240,232,.12);
+  padding:5px 14px;font-family:'Space Mono',monospace;
+  font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);
+}
+.plan-name{
+  font-family:'Anton',sans-serif;font-size:46px;
+  letter-spacing:.04em;line-height:1;margin-bottom:6px;
+}
+.plan.featured .plan-name{color:var(--paper);}
+.plan-tagline{font-size:16px;font-weight:400;font-style:italic;margin-bottom:44px;color:var(--grey);}
+.plan.featured .plan-tagline{color:rgba(245,240,232,.45);}
+.plan-tagline:not(.featured .plan-tagline){color:var(--grey);}
+.plan-price{font-family:'Anton',sans-serif;font-size:76px;line-height:1;letter-spacing:-.02em;margin-bottom:6px;}
+.price-spark{color:var(--grey);}
+.price-pro{color:#a78bfa;}
+.price-elite{background:linear-gradient(120deg,var(--gold),#d4af37);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.plan-period{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;color:var(--grey);display:block;margin-bottom:44px;}
+.plan.featured .plan-period{color:rgba(245,240,232,.35);}
+.plan-cta{
+  width:100%;font-family:'Space Mono',monospace;
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  background:var(--ink);color:var(--paper);border:none;
+  padding:16px;cursor:pointer;margin-bottom:44px;
+  transition:all .2s;position:relative;overflow:hidden;
+}
+.plan-cta::after{content:'';position:absolute;inset:0;background:var(--gold);transform:translateX(-101%);transition:transform .3s cubic-bezier(.4,0,.2,1);}
+.plan-cta:hover::after{transform:translateX(0);}
+.plan-cta span{position:relative;z-index:1;}
+.plan-cta:hover span{color:var(--ink);}
+.plan.featured .plan-cta{background:var(--paper);color:var(--ink);}
+.plan.featured .plan-cta::after{background:var(--gold);}
+.plan.featured .plan-cta:hover span{color:var(--ink);}
+.plan-cta.gold{background:linear-gradient(135deg,var(--gold),#d4af37);color:var(--ink);}
+.plan-cta.gold::after{background:var(--ink);}
+.plan-cta.gold:hover span{color:var(--paper);}
+.plan-divider{height:1px;background:var(--lgrey);margin-bottom:32px;}
+.plan.featured .plan-divider{background:rgba(245,240,232,.1);}
+.plan-feature{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:8px 0;border-bottom:1px solid rgba(0,0,0,.05);
+  font-size:14px;font-weight:300;line-height:1.4;
+}
+.plan.featured .plan-feature{color:rgba(245,240,232,.6);border-bottom-color:rgba(255,255,255,.04);}
+.plan-feature:not(.featured .plan-feature){color:var(--grey);}
+.plan-feature:last-child{border-bottom:none;}
+.chk{flex-shrink:0;font-size:11px;margin-top:2px;}
+.chk-y{color:var(--gold);}
+.chk-n{color:var(--lgrey);}
+.plan-feature.off{opacity:.3;}
+
+/* Guarantee strip */
+.guarantee{
+  background:var(--ink);padding:60px 52px;
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;
+}
+.g-item{
+  padding:28px 36px;border-right:1px solid #1a1a1a;
+  display:flex;flex-direction:column;gap:10px;
+}
+.g-item:last-child{border-right:none;}
+.g-title{font-family:'Anton',sans-serif;font-size:22px;letter-spacing:.04em;color:var(--paper);}
+.g-desc{font-size:14px;font-weight:400;font-style:italic;color:#aaa;line-height:1.6;}
+
+/* Testimonials */
+.testimonials{padding:80px 52px;border-top:1px solid var(--lgrey);}
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--lgrey);margin-top:60px;}
+.test-card{background:var(--paper);padding:36px 28px;display:flex;flex-direction:column;gap:20px;}
+.test-quote{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:18px;font-weight:400;color:var(--ink);line-height:1.65;
+  flex:1;
+}
+.test-author{display:flex;flex-direction:column;gap:4px;border-top:1px solid var(--lgrey);padding-top:20px;}
+.test-name{font-family:'Anton',sans-serif;font-size:18px;letter-spacing:.04em;}
+.test-role{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);}
+.test-plan{color:var(--gold);}
+
+@media(max-width:900px){
+  .page-hero{grid-template-columns:1fr;padding:120px 24px 60px;}
+  .billing-wrap{align-items:flex-start;}
+  .plans-grid{grid-template-columns:1fr;}
+  .plan{border-right:none;border-bottom:1px solid var(--lgrey);}
+  .guarantee{grid-template-columns:1fr;}
+  .g-item{border-right:none;border-bottom:1px solid #1a1a1a;}
+  .test-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-ring"></div>
+
+<nav id="nav" class="solid">
+  <a class="nav-brand" href="index.html">VIRALY<span>.</span></a>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="features.html">Fonctionnalités</a>
+    <a href="pricing.html" class="active">Tarifs</a>
+  </div>
+  <button class="btn btn-dark nav-cta" onclick="location.href='app.html'"><span>Commencer</span></button>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="rv">
+    <span class="sec-num">— 02 / Tarifs</span>
+    <h1 class="sec-title">CHOISISSEZ<br/>VOTRE <em>NIVEAU</em><br/>DE CROISSANCE.</h1>
+  </div>
+  <div class="billing-wrap rv2">
+    <p class="bill-note">Changez à tout moment · Annulation sans frais</p>
+    <div class="billing-toggle">
+      <button class="bill-btn active" id="bm" onclick="setBill('monthly')">Mensuel</button>
+      <button class="bill-btn" id="by" onclick="setBill('yearly')">Annuel <span class="bill-save">−20%</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- PLANS -->
+<div class="plans-grid rv">
+  <!-- SPARK -->
+  <div class="plan">
+    <div class="plan-top-bar grey"></div>
+    <span class="plan-eyebrow">Plan 01 · Gratuit</span>
+    <div class="plan-name">SPARK</div>
+    <div class="plan-tagline">Pour démarrer, sans risque.</div>
+    <div class="plan-price price-spark">0€</div>
+    <span class="plan-period">Gratuit pour toujours</span>
+    <button class="plan-cta" onclick="choosePlan('spark')"><span>Commencer gratuitement</span></button>
+    <div class="plan-divider"></div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> 1 plateforme analysée</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> 3 idées de posts / mois</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Hashtags recommandés</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Score de viralité basique</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Plan semaine simplifié</div>
+    <div class="plan-feature off"><span class="chk chk-n">—</span> Multi-plateforme</div>
+    <div class="plan-feature off"><span class="chk chk-n">—</span> Scripts complets</div>
+    <div class="plan-feature off"><span class="chk chk-n">—</span> Analyse concurrents</div>
+    <div class="plan-feature off"><span class="chk chk-n">—</span> Export CSV / PDF</div>
+  </div>
+
+  <!-- PRO -->
+  <div class="plan featured">
+    <div class="plan-top-bar purple"></div>
+    <div class="featured-tag">Le plus populaire</div>
+    <span class="plan-eyebrow" style="color:rgba(245,240,232,.35);">Plan 02 · Recommandé</span>
+    <div class="plan-name">PRO</div>
+    <div class="plan-tagline">Pour les créateurs sérieux.</div>
+    <div class="plan-price" id="pro-price" style="color:#a78bfa;">29€</div>
+    <span class="plan-period" id="pro-period">/mois · 7 jours d'essai gratuit</span>
+    <button class="plan-cta" onclick="choosePlan('pro')"><span>Démarrer l'essai gratuit</span></button>
+    <div class="plan-divider"></div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> 3 plateformes simultanées</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> 10 idées de posts / mois</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Scripts complets optimisés</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Analyse de 3 concurrents</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Calendrier 30 jours</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Prédiction viralité avancée</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Export CSV</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Tendances de niche</div>
+    <div class="plan-feature off"><span class="chk chk-n">—</span> Scripts vidéo / podcast</div>
+    <div class="plan-feature off"><span class="chk chk-n">—</span> Stratégie de marque</div>
+  </div>
+
+  <!-- ELITE -->
+  <div class="plan">
+    <div class="plan-top-bar gold"></div>
+    <span class="plan-eyebrow">Plan 03 · Tout inclus</span>
+    <div class="plan-name" style="background:linear-gradient(120deg,var(--gold),#d4af37);-webkit-background-clip:text;background-clip:text;color:transparent;">ELITE</div>
+    <div class="plan-tagline">Pour dominer votre niche.</div>
+    <div class="plan-price price-elite" id="elite-price">79€</div>
+    <span class="plan-period" id="elite-period">/mois · accès immédiat</span>
+    <button class="plan-cta gold" onclick="choosePlan('elite')"><span>Accès Elite immédiat</span></button>
+    <div class="plan-divider"></div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Toutes les plateformes</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Posts illimités / mois</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Ghostwriting IA complet</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Analyse concurrents illimitée</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Calendrier 90 jours</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Scripts vidéo & podcast</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Stratégie de marque</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Export PDF rapport complet</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> Support prioritaire 24/7</div>
+    <div class="plan-feature"><span class="chk chk-y">+</span> API & webhooks</div>
+  </div>
+</div>
+
+<!-- GUARANTEE -->
+<div class="guarantee rv">
+  <div class="g-item"><div class="g-title">ESSAI 7 JOURS</div><div class="g-desc">Plan Pro gratuit 7 jours. Aucune carte bancaire requise pour démarrer.</div></div>
+  <div class="g-item"><div class="g-title">ANNULATION LIBRE</div><div class="g-desc">Annulez à tout moment en un clic. Aucun engagement, aucun frais caché.</div></div>
+  <div class="g-item"><div class="g-title">PAIEMENT SÉCURISÉ</div><div class="g-desc">Transactions chiffrées via Stripe. Vos données bancaires ne nous parviennent jamais.</div></div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div class="testimonials">
+  <div class="rv">
+    <span class="sec-num">— Ils nous font confiance</span>
+    <h2 class="sec-title" style="margin-bottom:0;">CE QU'ILS<br/><em>en disent.</em></h2>
+  </div>
+  <div class="test-grid rv2">
+    <div class="test-card">
+      <div class="test-quote">"En 2 semaines avec Viraly Pro, j'ai doublé mon taux d'engagement sur LinkedIn. Les scripts sont prêts à l'emploi, c'est hallucinant."</div>
+      <div class="test-author">
+        <div class="test-name">THOMAS K.</div>
+        <div class="test-role">Créateur Business · <span class="test-plan">Plan Pro</span></div>
+      </div>
+    </div>
+    <div class="test-card">
+      <div class="test-quote">"L'analyse concurrents Elite m'a révélé des opportunités que je n'aurais jamais vues. +1 800 abonnés en un mois sur Instagram."</div>
+      <div class="test-author">
+        <div class="test-name">SARA M.</div>
+        <div class="test-role">Créatrice Lifestyle · <span class="test-plan">Plan Elite</span></div>
+      </div>
+    </div>
+    <div class="test-card">
+      <div class="test-quote">"Je testais Spark gratuitement et j'ai migré en Pro après 3 jours. La différence de qualité des scripts est immédiatement visible."</div>
+      <div class="test-author">
+        <div class="test-name">ALEX R.</div>
+        <div class="test-role">Créateur Tech & IA · <span class="test-plan">Plan Pro</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER GOLD -->
+<div class="ticker-band gold">
+  <div class="ticker-track fast">
+    <div class="ticker-item">COMMENCEZ GRATUITEMENT<span class="dot">✦</span></div>
+    <div class="ticker-item">7 JOURS D'ESSAI PRO<span class="dot">✦</span></div>
+    <div class="ticker-item">ANNULATION LIBRE<span class="dot">✦</span></div>
+    <div class="ticker-item">PAIEMENT SÉCURISÉ<span class="dot">✦</span></div>
+    <div class="ticker-item">COMMENCEZ GRATUITEMENT<span class="dot">✦</span></div>
+    <div class="ticker-item">7 JOURS D'ESSAI PRO<span class="dot">✦</span></div>
+    <div class="ticker-item">ANNULATION LIBRE<span class="dot">✦</span></div>
+    <div class="ticker-item">PAIEMENT SÉCURISÉ<span class="dot">✦</span></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand">VIRALY<span>.</span></div>
+  <div class="footer-links">
+    <a href="index.html">Accueil</a>
+    <a href="features.html">Fonctionnalités</a>
+    <a href="pricing.html">Tarifs</a>
+  </div>
+  <div class="footer-copy">© 2025 Viraly · Tous droits réservés · Propulsé par Claude AI</div>
+</footer>
+
+<script>
+
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>{cur.style.width='12px';cur.style.height='12px';ring.style.width='44px';ring.style.height='44px';});el.addEventListener('mouseleave',()=>{cur.style.width='6px';cur.style.height='6px';ring.style.width='28px';ring.style.height='28px';});});
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('solid',window.scrollY>40));
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.06});
+document.querySelectorAll('.rv,.rv2,.rv3').forEach(el=>io.observe(el));
+
+document.querySelectorAll('.rv,.rv2,.rv3').forEach(el=>io.observe(el));
+
+function setBill(b){
+  ['monthly','yearly'].forEach(x=>document.getElementById('b'+x[0]).classList.toggle('active',x===b));
+  const pp=b==='yearly'?23:29, ep=b==='yearly'?63:79;
+  document.getElementById('pro-price').textContent=pp+'€';
+  document.getElementById('elite-price').textContent=ep+'€';
+  document.getElementById('pro-period').textContent=b==='yearly'?'/mois · économisez 72€/an':'/mois · 7 jours d\'essai gratuit';
+  document.getElementById('elite-period').textContent=b==='yearly'?'/mois · économisez 192€/an':'/mois · accès immédiat';
+}
+function choosePlan(plan){
+  localStorage.setItem('viraly-plan', plan);
+  window.location.href = 'app.html';
+}
+</script>
+</body>
+</html>
